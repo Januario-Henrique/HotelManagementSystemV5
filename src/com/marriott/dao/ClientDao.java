@@ -1,0 +1,175 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.marriott.dao;
+
+import com.marriott.model.Client;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+/**
+ *
+ * @author Janaurio Henrique
+ */
+public class ClientDao {
+    //JDBC PROPERTIES
+    private final String jdbcUrl= "jdbc:mysql://localhost:3306/java_thursday_2026";
+    private final String dbUsername="root";
+    private final String dbPasswd = "";
+    
+    
+    //CRUD Operation
+    // create -->> INSERT
+    public Integer registerClient(Client clientObj){
+        // step 0: surround with try and catch
+        
+        try{
+            //step 1: create connection
+            Connection con = DriverManager.getConnection(jdbcUrl, dbUsername, dbPasswd);
+            
+            //step 2 prepare the statement
+            String sql = "INSERT INTO client (id, name, phoneNumber, email, age) VALUES (?, ?, ?, ?, ?)";
+            PreparedStatement pst = con.prepareStatement(sql);
+            
+            pst.setString(1, clientObj.getNationalId());
+            pst.setString(2, clientObj.getNames());
+            pst.setString(3, clientObj.getPhoneNumber());
+            pst.setString(4, clientObj.getEmail());
+            pst.setInt(5, clientObj.getAge());
+            
+            
+            // step 3: execute the statement
+            int rowsAffected = pst.executeUpdate();
+            // step 4: close connection 
+            pst.close();
+            con.close();
+            return rowsAffected;
+            
+        }catch(Exception ex){
+            ex.printStackTrace();
+            return 0;
+        }
+    
+    
+    }
+     public int updateClient(Client clientObj){
+        //update
+            try{
+            //step 1: connect with database
+            Connection con= DriverManager.getConnection(jdbcUrl, dbUsername, dbPasswd);
+            //step2: Prepare statement
+            String sql="UPDATE client SET name=?,phoneNumber=?,email=?,age=? WHERE id=?";
+
+           PreparedStatement pst= con.prepareStatement(sql);
+           pst.setString(1,clientObj.getNames());
+           pst.setString(2, clientObj.getPhoneNumber());
+           pst.setString(3, clientObj.getEmail());
+           pst.setInt(4, clientObj.getAge());
+           pst.setString(5, clientObj.getNationalId());
+           int rowAffected = pst.executeUpdate();
+
+
+            con.close();
+            return rowAffected;
+            }catch(Exception ex){
+                System.out.println("Error:"+ex.getMessage());
+                ex.printStackTrace();
+                return 0;
+        }
+        }
+     
+      //delete
+        public int deleteClient(Client clientObj){
+            try{
+                Connection con= DriverManager.getConnection(jdbcUrl, dbUsername, dbPasswd);
+                String sql="DELETE FROM client WHERE id=?";
+
+                PreparedStatement pst= con.prepareStatement(sql);
+
+                pst.setString(1,clientObj.getNationalId());
+                int rowAffected = pst.executeUpdate();
+            
+                con.close();
+                return rowAffected;
+            }catch(Exception ex){
+                System.out.println("Error: "+ ex.getMessage());
+                ex.printStackTrace();
+                return 0;
+            }
+
+        }
+        //read
+        public int readClient(){
+        try{
+            Connection con= DriverManager.getConnection(jdbcUrl, dbUsername, dbPasswd);
+            
+            String sql="SELECT * FROM client";
+            
+            PreparedStatement pst= con.prepareStatement(sql);
+            
+            ResultSet rs= pst.executeQuery();
+            
+            boolean hasData= false;
+            
+            while(rs.next()){
+                hasData= true;
+                
+                System.out.printf("%-5s %-15s %-15s %-25s %-5d",
+                       rs.getString("id"),
+                       rs.getString("name"),
+                       rs.getString("phoneNumber"),
+                       rs.getString("email"),
+                       rs.getInt("age")
+                );
+                
+            
+            
+            }
+            if(!hasData){
+                System.out.println("No Client Found ");
+            
+            }
+            con.close();
+        return 1;
+        }catch(Exception ex){
+            System.out.println("ERROR:"+ex.getMessage());
+            ex.printStackTrace();
+            return 0;
+        
+        }
+        
+        
+        }
+        // find client
+        public int findClient(Client clientObj){
+            try{
+                Connection con= DriverManager.getConnection(jdbcUrl, dbUsername, dbPasswd);
+                
+                String sql="SELECT * FROM client WHERE id=?";
+                
+                PreparedStatement pst= con.prepareStatement(sql);
+                pst.setString(1, clientObj.getNationalId());
+                ResultSet rs= pst.executeQuery();
+                
+                if(rs.next()){
+                    System.out.println("Client ID found");
+                }else{
+                    System.out.println("Client NOT ID found");
+                }
+            
+            con.close();
+            return 1;
+            }catch(Exception ex){
+                System.out.println("Error: "+ex.getMessage());
+                ex.printStackTrace();
+                return 0;
+        
+            }
+        
+        
+        }
+}
