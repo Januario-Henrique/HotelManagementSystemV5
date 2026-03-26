@@ -10,6 +10,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -177,5 +179,42 @@ public class ClientDao {
             }
 
             return client;
+}
+       
+       public List<Client> getAllClients(){
+
+        List<Client> clients = new ArrayList<>();
+
+        try{
+
+            Connection con = DriverManager.getConnection(jdbcUrl, dbUsername, dbPasswd);
+
+            String sql = "SELECT * FROM client";
+
+            PreparedStatement pst = con.prepareStatement(sql);
+
+            ResultSet rs = pst.executeQuery();
+
+            while(rs.next()){
+
+                Client client = new Client();
+
+                client.setNationalId(rs.getString("id"));
+                client.setNames(rs.getString("name"));
+                client.setPhoneNumber(rs.getString("phoneNumber"));
+                client.setEmail(rs.getString("email"));
+                client.setAge(rs.getInt("age"));
+
+                clients.add(client);
+            }
+
+            con.close();
+
+        }catch(Exception e){
+
+            e.printStackTrace();
+        }
+
+        return clients;
 }
 }

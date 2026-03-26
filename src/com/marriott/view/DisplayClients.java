@@ -4,6 +4,12 @@
  * and open the template in the editor.
  */
 package com.marriott.view;
+import com.marriott.dao.ClientDao;
+import com.marriott.model.Client;
+import java.util.List;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -14,10 +20,67 @@ public class DisplayClients extends javax.swing.JFrame {
     /**
      * Creates new form DisplayClients
      */
+    private JTable clientsTable;
+    private JScrollPane scrollPane;
     public DisplayClients() {
         initComponents();
+        createTable();
+        loadClients();
+    }
+    // cria a tabela
+    private void createTable(){
+
+    clientsTable = new JTable();
+
+    clientsTable.setModel(
+        new DefaultTableModel(
+            new Object [][] {},
+            new String [] {
+                "ID",
+                "Name",
+                "Phone Number",
+                "Email",
+                "Age"
+            }
+        )
+    );
+
+    scrollPane = new JScrollPane(clientsTable);
+
+    // layout simples e confiável
+    getContentPane().setLayout(new java.awt.BorderLayout());
+
+    getContentPane().add(scrollPane, java.awt.BorderLayout.CENTER);
+
+    setSize(650,400);
+    setLocationRelativeTo(null);
+}
+     // carrega dados do banco
+    private void loadClients(){
+
+        ClientDao dao = new ClientDao();
+
+        List<Client> clientList = dao.getAllClients();
+
+        DefaultTableModel model = (DefaultTableModel) clientsTable.getModel();
+
+        model.setRowCount(0);
+
+        for(Client client : clientList){
+
+            model.addRow(new Object[]{
+
+                client.getNationalId(),
+                client.getNames(),
+                client.getPhoneNumber(),
+                client.getEmail(),
+                client.getAge()
+
+            });
+        }
     }
 
+ 
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -42,7 +105,7 @@ public class DisplayClients extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
     /**
      * @param args the command line arguments
      */
