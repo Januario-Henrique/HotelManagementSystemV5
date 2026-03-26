@@ -7,7 +7,7 @@ package com.marriott.view;
 
 /**
  *
- * @author LEGACY TECHNOLOGY
+ * @author Januario Henrique
  */
 public class Delete extends javax.swing.JFrame {
 
@@ -43,6 +43,11 @@ public class Delete extends javax.swing.JFrame {
         deleteBtn.setText("DELETE");
 
         backBtn.setText("Back");
+        backBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -94,6 +99,13 @@ public class Delete extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void backBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backBtnActionPerformed
+        // TODO add your handling code here:
+        App menu = new App();
+        menu.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_backBtnActionPerformed
 
     /**
      * @param args the command line arguments

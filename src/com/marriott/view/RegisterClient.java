@@ -98,6 +98,11 @@ public class RegisterClient extends javax.swing.JFrame {
         });
 
         backBtn.setText("Back");
+        backBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -204,13 +209,7 @@ public class RegisterClient extends javax.swing.JFrame {
     }//GEN-LAST:event_namesTxtActionPerformed
 
     private void registerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerBtnActionPerformed
-        RegisterClient registerFrame = new RegisterClient();
-        registerFrame.setVisible(true);
-
-       
-        
-        
-        
+ 
         // grab entered values and we send to model
         Client clientObj = new Client();
         clientObj.setNationalId(nationalIdTxt.getText());
@@ -223,6 +222,7 @@ public class RegisterClient extends javax.swing.JFrame {
         int age;
         try {
             age = Integer.parseInt(ageTxt.getText());
+            clientObj.setAge(age);
         } catch(NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Invalid age!");
             return;
@@ -242,6 +242,13 @@ public class RegisterClient extends javax.swing.JFrame {
         this.dispose();
 
     }//GEN-LAST:event_registerBtnActionPerformed
+
+    private void backBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backBtnActionPerformed
+        // TODO add your handling code here:
+        App menu = new App();
+        menu.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_backBtnActionPerformed
 
     /**
      * @param args the command line arguments

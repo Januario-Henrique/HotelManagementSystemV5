@@ -7,7 +7,7 @@ package com.marriott.view;
 
 /**
  *
- * @author LEGACY TECHNOLOGY
+ * @author Januario Henrique
  */
 public class DisplayClients extends javax.swing.JFrame {
 

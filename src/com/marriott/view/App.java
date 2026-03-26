@@ -231,9 +231,16 @@ public class App extends javax.swing.JFrame {
     }//GEN-LAST:event_findClientBtnActionPerformed
 
     private void exitBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitBtnActionPerformed
-        // TODO add your handling code here:                                    
+        // TODO add your handling code here: 
+       
+        JOptionPane.showMessageDialog(
+            this,
+            "Thank you for using this app!",
+            "Exit",
+            JOptionPane.INFORMATION_MESSAGE
+        );
+        
         System.exit(0);
-
     }//GEN-LAST:event_exitBtnActionPerformed
 
     /**
