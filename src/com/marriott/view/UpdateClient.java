@@ -5,6 +5,10 @@
  */
 package com.marriott.view;
 
+import com.marriott.dao.ClientDao;
+import com.marriott.model.Client;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author LEGACY TECHNOLOGY
@@ -57,6 +61,11 @@ public class UpdateClient extends javax.swing.JFrame {
         jLabel6.setText("New Age");
 
         updateBtn.setText("Update");
+        updateBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateBtnActionPerformed(evt);
+            }
+        });
 
         backBtn.setText("Back");
         backBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -157,6 +166,59 @@ public class UpdateClient extends javax.swing.JFrame {
         menu.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_backBtnActionPerformed
+
+    private void updateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBtnActionPerformed
+        // TODO add your handling code here:
+        
+         try{
+
+        // 1. criar objeto Client
+        Client client = new Client();
+
+        // 2. pegar dados do formulário
+        client.setNationalId(nationalIdTxt.getText());
+        client.setNames(newNamesTxt.getText());
+        client.setPhoneNumber(newPhoneNumberTxt.getText());
+        client.setEmail(newEmailTxt.getText());
+        client.setAge(Integer.parseInt(newAgeTxt.getText()));
+
+        // 3. chamar DAO
+        ClientDao dao = new ClientDao();
+
+        int result = dao.updateClient(client);
+
+        // 4. verificar resultado
+        if(result > 0){
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Client updated successfully"
+            );
+
+            // limpar campos
+            nationalIdTxt.setText("");
+            newNamesTxt.setText("");
+            newPhoneNumberTxt.setText("");
+            newEmailTxt.setText("");
+            newAgeTxt.setText("");
+
+        }else{
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Client not found"
+            );
+        }
+
+        }catch(Exception e){
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Invalid data. Check Age field."
+            );
+
+        }
+    }//GEN-LAST:event_updateBtnActionPerformed
 
     /**
      * @param args the command line arguments

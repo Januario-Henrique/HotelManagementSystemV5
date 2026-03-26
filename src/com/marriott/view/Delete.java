@@ -5,6 +5,10 @@
  */
 package com.marriott.view;
 
+import com.marriott.dao.ClientDao;
+import com.marriott.model.Client;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Januario Henrique
@@ -41,6 +45,11 @@ public class Delete extends javax.swing.JFrame {
         jLabel2.setText("ID to Be delete");
 
         deleteBtn.setText("DELETE");
+        deleteBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteBtnActionPerformed(evt);
+            }
+        });
 
         backBtn.setText("Back");
         backBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -107,6 +116,34 @@ public class Delete extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_backBtnActionPerformed
 
+    private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
+        // TODO add your handling code here:
+         
+        String id = deleteTxt.getText();
+
+        Client client = new Client();
+        client.setNationalId(id);
+
+        ClientDao dao = new ClientDao();
+
+        int result = dao.deleteClient(client);
+
+        if(result > 0){
+
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Client deleted successfully"
+            );
+
+        }else{
+
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Client not found"
+            );
+        }
+    }//GEN-LAST:event_deleteBtnActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -134,7 +171,8 @@ public class Delete extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-        /* Create and display the deleteTxt     java.awt.EventQueue.invokeLater(new Runnable() {
+        /* Create and display the deleteTxt    */
+        java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Delete().setVisible(true);
             }

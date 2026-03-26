@@ -145,31 +145,37 @@ public class ClientDao {
         
         }
         // find client
-        public int findClient(Client clientObj){
+       public Client findClient(String id){
+
+            Client client = null;
+
             try{
-                Connection con= DriverManager.getConnection(jdbcUrl, dbUsername, dbPasswd);
-                
-                String sql="SELECT * FROM client WHERE id=?";
-                
-                PreparedStatement pst= con.prepareStatement(sql);
-                pst.setString(1, clientObj.getNationalId());
-                ResultSet rs= pst.executeQuery();
-                
+                Connection con = DriverManager.getConnection(jdbcUrl, dbUsername, dbPasswd);
+
+                String sql = "SELECT * FROM client WHERE id=?";
+
+                PreparedStatement pst = con.prepareStatement(sql);
+                pst.setString(1, id);
+
+                ResultSet rs = pst.executeQuery();
+
                 if(rs.next()){
-                    System.out.println("Client ID found");
-                }else{
-                    System.out.println("Client NOT ID found");
+
+                    client = new Client();
+
+                    client.setNationalId(rs.getString("id"));
+                    client.setNames(rs.getString("name"));
+                    client.setPhoneNumber(rs.getString("phoneNumber"));
+                    client.setEmail(rs.getString("email"));
+                    client.setAge(rs.getInt("age"));
                 }
-            
-            con.close();
-            return 1;
+
+                con.close();
+
             }catch(Exception ex){
-                System.out.println("Error: "+ex.getMessage());
                 ex.printStackTrace();
-                return 0;
-        
             }
-        
-        
-        }
+
+            return client;
+}
 }
